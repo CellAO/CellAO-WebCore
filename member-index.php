@@ -1,14 +1,12 @@
 <?php
 	require_once('configs/config.php');
-	$theme = THEME;
-	$themetabs = $theme.'tabs.php';
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Member Index</title>
-<link href="<?php echo $theme; ?>css/style.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo THEME ?>css/style.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div id="container">
@@ -33,7 +31,7 @@
         <div id="tabs8">
             <ul>
                 <!-- CSS Tabs -->
-		<?php include "$themetabs";?>
+        <?php require_once(THEME."/tabs.php");?>
             </ul>
         </div>
     </div>

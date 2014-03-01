@@ -1,7 +1,5 @@
 <?php
 	require_once('configs/config.php');
-	$theme = THEME;
-	$themetabs = $theme.'tabs.php';
 	require_once('auth.php');
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -9,7 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>My Profile</title>
-<link href="<?php echo $theme; ?>css/style.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo THEME ?>css/style.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div id="container">
@@ -34,7 +32,7 @@
         <div id="tabs8">
             <ul>
                 <!-- CSS Tabs -->
-		<?php include "$themetabs";?>
+        <?php require_once(THEME."/tabs.php");?>
             </ul>
         </div>
     </div>

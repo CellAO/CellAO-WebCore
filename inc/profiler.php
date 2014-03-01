@@ -24,10 +24,11 @@
 // 100=blackmanes statbuffer usable
 
 $exp = $_SESSION['SESS_EXPANSIONS'];
-$Expansion = array('NW', 'SL', 'SL Preorder', 'AI', 'AI Preorder', 'LE', 'LE Preorder', 'LoX', 'LoX Preorder', 'Mail', 'PMV Obsidian Edition');
-for ($i = 0; $i < sizeof($Expansion); $i++) {
+$userExpansions = "";
+$Expansions = array('NW', 'SL', 'SL Preorder', 'AI', 'AI Preorder', 'LE', 'LE Preorder', 'LoX', 'LoX Preorder', 'Mail', 'PMV Obsidian Edition');
+for ($i = 0; $i < sizeof($Expansions); $i++) {
 	if ($exp & pow(2, $i)) {
- 		$Expansions .= $Expansion[$i] . ', ';
+ 		$userExpansions .= $Expansions[$i] . ', ';
 	}
 }
 echo "My User ID: <b>".$_SESSION['SESS_ID']."<br></b>";
@@ -37,7 +38,7 @@ echo "My User Name: <b>".$_SESSION['SESS_USER_NAME']."<br></b>";
 echo "My Max Chars: <b>".$_SESSION['SESS_ALLOWED_CHARACTERS']."<br></b>";
 echo "My Gen Flags: <b>".$_SESSION['SESS_FLAGS']."<br></b>";
 echo "My Acnt Flags: <b>".$_SESSION['SESS_ACCOUNTFLAGS']."<br></b>";
-echo "My Expansions: <b>(".$exp.") ".$Expansions."<br></b>";
+echo "My Expansions: <b>(".$exp.") ".$userExpansions."<br></b>";
 echo "My GM LvL: <b>".$_SESSION['SESS_GM']."<br></b>";
 echo "My First Name: <b>".$_SESSION['SESS_FIRST_NAME']."<br></b>";
 echo "My Last Name: <b>".$_SESSION['SESS_LAST_NAME']."<br></b>";

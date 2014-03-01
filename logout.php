@@ -1,11 +1,5 @@
 <?php
-	require_once('configs/config.php');
-	$theme = THEME;
-	$themetabs = $theme.'tabs.php';
-	
-	//Start session
-	session_start();
-	
+	require_once('configs/config.php');		
 	//Unset the variables stored in session
 	unset($_SESSION['SESS_ID']);
 	unset($_SESSION['SESS_CREATIONDATE']);
@@ -42,7 +36,7 @@
         <div id="tabs8">
             <ul>
                 <!-- CSS Tabs -->
-		<?php include "$themetabs";?>
+        <?php require_once(THEME."/tabs.php");?>
             </ul>
         </div>
     </div>

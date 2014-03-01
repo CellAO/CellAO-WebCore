@@ -7,7 +7,7 @@ require_once("../configs/config.php");
 require_once('../engine.php');
 $theme = THEME;
 $themetabs = '../'.$theme.'tabs.php';
-if(!$_REQUEST['pUsername']) {
+if(!isset($_REQUEST['pUsername'])){
 	$pUsername = $_SESSION['SESS_USER_NAME'];
 } else {
 	$pUsername = $_REQUEST['pUsername'];
@@ -61,7 +61,7 @@ function id2img($uid) {
 	$ids[$theid]["img"] = $node->getAttribute('img');
     	$i++;
     }
-    $qry = ("SELECT * FROM charactersinventory WHERE ID = '$uid'");
+    $qry = ("SELECT * FROM items WHERE containerType = '$uid'");
     $result=mysql_query($qry);
     if ($row = mysql_fetch_assoc($result)) {
     	do {			  	  
@@ -93,7 +93,7 @@ function id2stats($uid) {
 	$idss[$theids]["Name"] = $node->getAttribute('Name');
     	$i++;
     }
-    $qry = ("SELECT * FROM characters_stats WHERE ID = '$uid'");
+    $qry = ("SELECT * FROM stats WHERE ID = '$uid'");
     $result=mysql_query($qry);
     if ($row = mysql_fetch_assoc($result)) {
     	do {			  	  
@@ -159,7 +159,7 @@ if(@$_REQUEST['changeme'])
 $userID = $_REQUEST['userID'];
 $Email = $_REQUEST['Email'];
 $Username = $_REQUEST['Username'];
-$Allowed_Characters = $_REQUEST['Allowed_Characters'];
+$AllowedCharacters = $_REQUEST['AllowedCharacters'];
 $Flags = $_REQUEST['Flags'];
 $AccountFlags = $_REQUEST['AccountFlags'];
 $Expansions = $_REQUEST['Expansions'];
@@ -167,7 +167,7 @@ $GM = $_REQUEST['GM'];
 $FirstName = $_REQUEST['FirstName'];
 $LastName = $_REQUEST['LastName'];
 
-	$qry=("UPDATE login SET Email='$Email', Username='$Username', Allowed_Characters='$Allowed_Characters', Flags='$Flags', AccountFlags='$AccountFlags', Expansions='$Expansions', GM='$GM', FirstName='$FirstName', LastName='$LastName' WHERE ID='$userID'");
+	$qry=("UPDATE login SET Email='$Email', Username='$Username', AllowedCharacters='$AllowedCharacters', Flags='$Flags', AccountFlags='$AccountFlags', Expansions='$Expansions', GM='$GM', FirstName='$FirstName', LastName='$LastName' WHERE ID='$userID'");
 	$result=mysql_query($qry);
 	if(!$result) {
 		die("Query Failed: ". mysql_error());
@@ -216,7 +216,7 @@ elseif(@$_REQUEST['changeuser'])
 		$eUsername = $row["Username"];
 		$CreationDate = $row["CreationDate"];
 		$eEmail = $row["Email"];
-		$eAllowed_Characters = $row["Allowed_Characters"];
+		$AllowedCharacters = $row["AllowedCharacters"];
 		$eFlags = $row["Flags"];
 		$eAccountFlags = $row["AccountFlags"];
 		$eExpansions = $row["Expansions"];
@@ -254,12 +254,12 @@ elseif(@$_REQUEST['changeuser'])
 			if ($row = mysql_fetch_assoc($result)) {$Email = $row["Email"];}
 		}
 		
-		if($eAllowed_Characters == "") {
-			$Allowed_Characters = "Please input Max Characters";
+		if($AllowedCharacters == "") {
+			$AllowedCharacters = "Please input Max Characters";
 		} else {
 			$qry = ("SELECT * FROM login WHERE Username = '$pUsername'");
 			$result=mysql_query($qry);
-			if ($row = mysql_fetch_assoc($result)) {$Allowed_Characters = $row["Allowed_Characters"];}
+			if ($row = mysql_fetch_assoc($result)) {$AllowedCharacters = $row["AllowedCharacters"];}
 		}
 		
 		if($eFlags == "") {
@@ -383,7 +383,7 @@ elseif(@$_REQUEST['changeuser'])
     <tr>
       <td width="50%"><font color="#555555">Max Allowed Characters</font></td>
       <td width="50%"><font color="#555555">
-        <input type="text" name="Allowed_Characters" value="<?php echo $Allowed_Characters?>">
+        <input type="text" name="AllowedCharacters" value="<?php echo $AllowedCharacters?>">
         </font></td>
     </tr>
     <tr>
