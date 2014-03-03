@@ -1,79 +1,32 @@
-<?php
-	require_once('configs/config.php');
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-    <title>CellAO</title>
-    <link rel="stylesheet" href="<?php echo THEME; ?>/css/style.css" type="text/css" />
-</head>
-
-<body>
-<!-- Master Container: Centered and 700px wide -->
-<div id="container">
-    <!-- The topmost bar -->
-    <div id="topbar">
-	[<?php echo date('Y-m-d'); ?>] &nbsp;&nbsp;&nbsp;&nbsp; .:Cell AO - Serving the AO Community:.
-    </div>
-    <!-- End of top bar -->
-
-    <!-- This holds the main header -->
-    <div id="headerwrapper">
-
-        <!-- This is the site title -->
-        <h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cell AO</h1>
-        <div>
-            <!-- This is the site slogan -->
-            <h6>
-                &nbsp;
-            </h6>
-            <br />
-        </div>
-	</div>
-	<!-- End of headerwrapper -->
-
-    <!-- This hold the navigation tabs -->
-    <div id="tabholder">
-        <div id="tabs8">
-            <ul>		
-                <!-- CSS Tabs -->
-        <?php require_once(THEME."/tabs.php");?>
-            </ul>
-        </div>
-    </div>
-    <!-- End of the tabs holder -->
+<?php require_once('includes/header.php'); ?>
 
     <!-- Here's the box for the main article -->
     <div class="articleboxouter">
 
-    <!-- This is the login controls holder -->
-        <div class="userform">
-	<form id="loginForm" name="loginForm" method="post" action="process-login.php">
-	<a href="/register-exec.php" class="userreg">Register</a>
-
-            <!-- Lots of whitespace -->
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-            <!-- Here's your login controls -->
-            Username
-            <input type="text" name="login" id="login" size="15"/>
-            Password
-            <input type="password" name="password" id="password" size="15" />
-            <input type="submit" name="Submit" value="Login" />
-	</form>
-        </div>
-    <!-- End of the login controls holder -->
-
         <!-- Here's where you can place ur content -->
         <div class="articleboxinner2">
-	<?php include "inc/articals.php" ?>
+
+            <!-- The flower image. 300px by 200px -->
+            <img src="images/help.jpg" alt="help" class="mainpiccontrol" />
+
+            <!-- The title for this article -->
+            <span class="articleheader">Anarchy Online</span>
+            <br />
+
+            <!-- The preview content -->
+            Omni-R&D announces a breakthrough in insurance technology that could have profound importance for the use of cell scanning and soul transferals in environments with low notum concentrations.
+The existence of the soul was proven in 28906. Since the discovery of being able to transfer this life force to cloned bodies in 28920, scientists have been trying to find a way to use this knowledge to stave off death, and indeed succeeded when the insurance system was perfected on Rubi-Ka in 29436. 
+
+            <br />
+
+            <!-- Link to the full article, an arrow and a text link -->
+            <span class="readmore">
+                <a href="#">
+                 <img src="images/arrow.png" alt="read more" class="noborder" />
+                </a>
+                <a href="#">Read More</a>
+                <br />&nbsp;
+            </span>        
         </div>
         <!-- End of content holder -->
     </div>
@@ -86,11 +39,11 @@
         <!-- All should be uniformly sized ;-) -->
         <div class="picbox">
 
-            <img src="<?php echo THEME; ?>images/f1.jpg" alt="help" class="pickboxcontrol" />
-            <img src="<?php echo THEME; ?>images/f2.jpg" alt="help" class="pickboxcontrol" />
-            <img src="<?php echo THEME; ?>images/f3.jpg" alt="help" class="pickboxcontrol" />
-            <img src="<?php echo THEME; ?>images/f6.jpg" alt="help" class="pickboxcontrol" />
-            <img src="<?php echo THEME; ?>images/f7.jpg" alt="help" class="pickboxcontrol" />
+            <img src="images/f1.jpg" alt="help" class="pickboxcontrol" />
+            <img src="images/f2.jpg" alt="help" class="pickboxcontrol" />
+            <img src="images/f3.jpg" alt="help" class="pickboxcontrol" />
+            <img src="images/f6.jpg" alt="help" class="pickboxcontrol" />
+            <img src="images/f7.jpg" alt="help" class="pickboxcontrol" />
         </div>
     </div>
     <!-- End of photogallery -->
@@ -142,25 +95,4 @@ Unfortunately we did not get a chance to complete the documentation for Crats th
         </div>
     </div>
     <!-- End of the three columns holder -->
-
-    <!-- This little whitespace will separate the page from the footer -->
-    <div id="i_bar">
-
-
-
-    </div>
-
-    <!-- Finally, here's the footer -->
-    <div id="footer">
-
-            Development: Prodigy &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c) Copyright-Free CELL AO.
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; XHTML 1.0 Strict | Pure CSS Layout (CSS level 2.1)
-
-    </div>
-    <!-- End of footer -->
-
-</div>
-<!-- End of master container -->
-
-</body>
-</html>
+<?php require_once('includes/footer.php'); ?>

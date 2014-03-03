@@ -1,41 +1,7 @@
-<?php
-	require_once('configs/config.php');
+<?php 
+    define('AUTH_REQUIRED', True);
+    require_once('includes/header.php');
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Member Index</title>
-<link href="<?php echo THEME ?>css/style.css" rel="stylesheet" type="text/css" />
-</head>
-<body>
-<div id="container">
-    <!-- The topmost bar -->
-    <div id="topbar">
-	.:Welcome <font color='EEE'><?php echo $_SESSION['SESS_USER_NAME'];?></font>:.&nbsp;&nbsp;&nbsp;&nbsp;
-	<a href="member-profile.php">My Profile</a> | <a href="logout.php">Logout</a>
-    </div>
-    <!-- End of top bar -->
-
-    <!-- This holds the main header -->
-    <div id="headerwrapper">
-    <h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login Successful!</h1>        <div>
-            <!-- This is the site slogan -->
-            <h6>
-                &nbsp;
-            </h6>
-            <br />
-        </div>
-        </div>
-	    <div id="tabholder">
-        <div id="tabs8">
-            <ul>
-                <!-- CSS Tabs -->
-        <?php require_once(THEME."/tabs.php");?>
-            </ul>
-        </div>
-    </div>
-    <!-- End of the tabs holder -->
 
     <!-- This is the login controls holder -->
 
@@ -47,11 +13,31 @@
     <div class="articleboxouter">
         <!-- Here's where you can place ur content -->
         <div class="articleboxinner2">
-	<?php include "inc/articals.php" ?>
+
+            <!-- The flower image. 300px by 200px -->
+            <img src="images/help.jpg" alt="help" class="mainpiccontrol" />
+
+            <!-- The title for this article -->
+            <span class="articleheader">Anarchy Online</span>
+            <br />
+
+            <!-- The preview content -->
+            Omni-R&D announces a breakthrough in insurance technology that could have profound importance for the use of cell scanning and soul transferals in environments with low notum concentrations.
+The existence of the soul was proven in 28906. Since the discovery of being able to transfer this life force to cloned bodies in 28920, scientists have been trying to find a way to use this knowledge to stave off death, and indeed succeeded when the insurance system was perfected on Rubi-Ka in 29436. 
+
+            <br />
+
+            <!-- Link to the full article, an arrow and a text link -->
+            <span class="readmore">
+                <a href="#">
+                 <img src="images/arrow.png" alt="read more" class="noborder" />
+                </a>
+                <a href="#">Read More</a>
+                <br />&nbsp;
+            </span>        
         </div>
         <!-- End of content holder -->
     </div>
-	<?php include "inc/filler.php" ?>
-    </div>
-</body>
-</html>
+<?php
+    require_once('includes/footer.php');
+?>

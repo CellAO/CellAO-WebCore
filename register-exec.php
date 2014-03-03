@@ -27,14 +27,11 @@
 	session_start();
 	
 	//Include database connection details
-	require_once('configs/config.php');
+	require_once('includes/config.php');
 	require_once('engine.php');
 	
 	//Array to store validation errors
 	$errmsg_arr = array();
-	
-	//Validation error flag
-	$errflag = false;
 	
 	//Connect to mysql server
 	$link = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);
@@ -66,33 +63,27 @@
 	$cpassword = clean($_POST['cpassword']);
 	
 	//Input Validations
+	//TODO: Additional input validations. Password length, actual e-mail, login length, etc.
 	if($fname == '') {
 		$errmsg_arr[] = 'First name missing';
-		$errflag = true;
 	}
 	if($lname == '') {
 		$errmsg_arr[] = 'Last name missing';
-		$errflag = true;
 	}
 	if($email == '') {
 		$errmsg_arr[] = 'Email Address missing';
-		$errflag = true;
 	}
 	if($login == '') {
 		$errmsg_arr[] = 'Login ID missing';
-		$errflag = true;
 	}
 	if($password == '') {
 		$errmsg_arr[] = 'Password missing';
-		$errflag = true;
 	}
 	if($cpassword == '') {
 		$errmsg_arr[] = 'Confirm password missing';
-		$errflag = true;
 	}
 	if( strcmp($password, $cpassword) != 0 ) {
 		$errmsg_arr[] = 'Passwords do not match';
-		$errflag = true;
 	}
 	
 	//Check for duplicate login information
@@ -102,11 +93,11 @@
 		$member = mysql_fetch_assoc($result);
 		if($member['Email']==$email) {
 			$errmsg_arr[] = 'The Email <b>'.$email.'</b> already exists.<br>Please register with another email.<br>Only one account can be registered oin this server.<br>We have logged this attempt with your IP.<br>You have been warned.';
-			$errflag = true;
+
 			@mysql_free_result($result);
 		}elseif ($member['Username']==$login) {
 			$errmsg_arr[] = 'The User <b>'.$login.'</b> already exists.<br>Please choose another name.';
-			$errflag = true;
+
 			@mysql_free_result($result);
 		}
 		$qry = "SELECT * FROM login WHERE FirstName='$fname'";
@@ -114,19 +105,15 @@
 		$member = mysql_fetch_assoc($result);
 		if ($member['FirstName']==$fname && $member['LastName']==$lname) {
 			$errmsg_arr[] = 'The User <b>'.$fname.' '.$lname.'</b> already exists.<br>Please choose another name.';
-			$errflag = true;
+
 			@mysql_free_result($result);
 		}
 	}
-	
-	//If there are input validations, redirect back to the registration form
-	if($errflag) {
-		$_SESSION['ERRMSG_ARR'] = $errmsg_arr;
-		session_write_close();
-		header("location: register-form.php");
-		exit();
+
+	if(sizeof($errmsg_arr) > 0) {
+		registerFailed($errmsg_arr);
 	}
-	
+		
 	//Extra Detail to fill in the User fields
 	$creationdate = date('Y-m-d H:i:s');
 	$allowed_characters = "6";
@@ -137,21 +124,26 @@
 	
 	//Create INSERT query
 	if (!$acntpwd = createhash($password)){
-		// Registration failed
-		header("location: register-exec.php");
+		registerFailed(array('Error creating account password.'));
 		exit();
 	}else {
+		//FIXME: Query does not work right now. 
+		//TODO: Switch to MySQL PDO
 		$qry = "INSERT INTO login(CreationDate, Email, Username, Password, Allowed_Characters, Flags, Accountflags, Expansions, GM, FirstName, LastName) VALUES('$creationdate', '$email', '$login', '$acntpwd', '$allowed_characters', '$flags', '$accountflags', '$expansions', '$gm', '$fname', '$lname')";
 		$result = @mysql_query($qry);
-	
-		//Check whether the query was successful or not
-		if($result) {
-		//test result
-		//echo "$creationdate $email $login $acntpwd $allowed_characters $flags $accountflags $expansions $gm $fname $lname";
-			header("location: register-success.php");
+			if($result) {
+			header("location: index.php?msg=Account successfully created. Please log in to continue.");
 			exit();
 		}else {
-			die("Query failed");
+			registerFailed(array('Error creating user account.'));
 		}
+	}
+
+	function registerFailed($errorMessages){
+		foreach ($errorMessages as $error) {
+			$errorText .= $error . "<br />";
+		}
+		header("location: register.php?err=" . $errorText);
+		exit();
 	}
 ?>

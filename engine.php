@@ -19,6 +19,7 @@ function CreateAccount($username, $password, $charsallowed, $expansion, $email)
     return true;
 }
 
+//TODO: Look at this a little more closely...
 function webpass($hash, $password)
 {
     $parts = explode("$", $hash);
@@ -28,4 +29,5 @@ function webpass($hash, $password)
         return true;
     }
     return false;
-}?>
+}
+?>
