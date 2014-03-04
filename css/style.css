@@ -4,9 +4,16 @@ html {
     height: 100%;
 }
 #mainContent {
-    /*height: 600px;*/
     width: inherit;
+    height: auto;
+    width: auto;
     background-color: #555555;
+    /*margin: 50px;*/
+}
+
+.indentedContent {
+    display: inline-block;
+    margin: 50px;
 }
 
 #resultTable {
@@ -178,7 +185,7 @@ h6 {
 .articleboxouter {
     width: auto;
     background-color: #555555;
-    padding: 0px 6px 0px 5px;
+    padding: -50px 6px 0px 5px;
     clear: both;
 } 
 

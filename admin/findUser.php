@@ -6,7 +6,7 @@
 	isset($_REQUEST['callback']) ? $callbackPage = $_REQUEST['callback'] : $callbackPage = "";
 	require_once('../includes/header.php');
 ?>
-	<div style="display: inline-block; padding-left: 70px; padding-top: 40px;">
+	<div style="display: inline-block;" class="indentedContent">
 	<table id="resultTable">
 		<thead>
 			<tr>

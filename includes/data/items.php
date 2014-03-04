@@ -1,27 +1,29 @@
 <?php
-
-    isset($_REQUEST['id']) ? $itemId = $_REQUEST['id'] : printNoResults();
+    //It looks like the itemicons.xml file has duplicates and is missing some entries.
+    //Might need to start looking at performing queries against the SQL DB.
     isset($_REQUEST['action']) ? $action = $_REQUEST['action'] : printNoResults();
 
     switch($action){
         case "getItem":
-            echo(json_encode(getItem($itemId)));
+            isset($_REQUEST['query']) ? $queryString = $_REQUEST['query'] : printNoResults();
+            echo(json_encode(getItem($queryString)));
             break;
         case "getItemImageURL":
-            echo(getItemImageURL($id));
+            isset($_REQUEST['query']) ? $queryString = $_REQUEST['query'] : printNoResults();
+            echo(json_encode(getItemImageURL($queryString)));
             break;
         case "getItemImageHTML":
-            echo(getItemImageHTML($id));
+            isset($_REQUEST['query']) ? $queryString = $_REQUEST['query'] : printNoResults();
+            echo(json_encode(getItemImageHTML($queryString)));
             break;
     }
-    printNoResults();
     die();
 
     function getUserItems($uid){
 
     }
 
-    function getItem($itemId){
+    function getItem($queryString){
         $item = array();
         $xdoc = new DOMDocument();
         $xdoc->load('itemsicons.xml');
@@ -29,24 +31,30 @@
         if(!$xdoc) {
             die("error");
         }
-        $nodeList = $xpath->query('/item2icon/cellao[@id="' . $itemId . '"]', $xdoc);
-        foreach ($nodeList as $node) {
-            $item = array('id' => $node->getAttribute('id'), 'name' => $node->getAttribute('name'), 'img' => $node->getAttribute('img'));
-        }
-        return $item;
+
+        if(is_int($queryString)){
+            $nodeList = $xpath->query('/item2icon/cellao[@id="' . $queryString . '"]', $xdoc);
+            foreach ($nodeList as $node) {
+                $item[] = array('id' => $node->getAttribute('id'), 'name' => $node->getAttribute('name'), 'img' => $node->getAttribute('img'));
+            }
+            return $item;
+        } // Else, if it's a string, perform a text search. 
     }
 
-    function getItemImageHTML($item){
-        if(!is_array($item)){
-            $item = getItem($itemId);
+    function getItemImageHTML($queryString){
+        if(!is_array($queryString)){
+            $searchResults = getItem($queryString);
         }
-        //TODO: I don't like pulling from auno...
-        return "<img src='http://auno.org/res/aoicons/".$item['img'].".gif' title='".$item["name"]."' alt='".$id_num."'>";
+        $returnData = array();
+        foreach($searchResults as $index => $item){
+            $returnData[] = "<img src='http://auno.org/res/aoicons/".$item['img'].".gif' title='".$item["name"]."' alt='" . $item['name'] ."'>";
+        }
+        return $returnData;
     }
 
     function getItemImageURL($item){
         if(!is_array($item)){
-            $item = getItem($itemId);
+            $item = getItem($item);
         }
         //TODO: I don't like pulling from auno...
         return "http://auno.org/res/aoicons/".$item['img'].".gif";

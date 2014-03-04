@@ -1,0 +1,44 @@
+.charAttrLabel {
+	min-width: 120px;
+	display: inline-block;
+}
+
+.charAttribute {
+	padding: 2px;
+}
+
+#editUser {
+	display: inline-block;
+	float: left;
+}
+
+#userInventory {
+	float: left; 
+	display: inline-block; 
+	padding-left: 50px;
+}
+
+.inventoryRow {
+	padding-bottom: 2px;
+}
+
+.inventorySlot {
+	border: 1px solid black;
+	min-width: 50px; 
+	min-height: 50px;
+	display: inline-block;
+	/*padding: 1px;*/
+}
+
+.active {
+	background: url('../images/processing.gif') no-repeat right top;
+}
+
+.savingIcon {
+	min-width: 15px;
+	min-height: 15px;
+	width: 15px;
+	height: 15px;
+	display: inline-block;
+	background-size:15px 15px;
+}
