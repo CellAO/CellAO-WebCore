@@ -73,7 +73,12 @@
 				<label for="GM">GM: </label>
 			</span>
 			<span>
-				<input type="text" value="" id="GM" />
+				<select id="GM">					
+					<option value="-1"></option>
+					<option value="0">User</option>
+					<option value="1">GM</option>
+					<option value="100">Administrator</option>
+				</select>
 			</span>
 			<span id='savingGM' class="savingIcon"></span>
 		</div>
@@ -83,6 +88,19 @@
 			</span>
 			<span>
 				<input type="text" value="" id="Expansions" />
+<!-- 			<select multiple>
+				<option value="0">Notum Wars</option>
+				<option value="1">Shadow Lands</option>
+				<option value="2">Shadow Lands Pre-Order</option>
+				<option value="3">Alien Invasion</option>
+				<option value="4">Alien Invasion Pre-Order</option>
+				<option value="5">Lost Eden</option>
+				<option value="6">Lost Eden Pre-Order</option>
+				<option value="7">Legacy of Xan</option>
+				<option value="8">Legacy of Xan Pre-Order</option>
+				<option value="9">Mail</option>
+				<option value="10">PMV Obsidian Edition</option>
+			</select> -->
 			</span>
 			<span id='savingExpansions' class="savingIcon"></span>
 		</div>
@@ -140,30 +158,22 @@
 	<script>
 		$(document).ready(function(){
 			jQuery.getJSON('../includes/data/users.php', {'action': 'getUserById', 'id': <?php echo($userId); ?>}, function(data){
+				$("#GM option[value='-1']").remove()
 				jQuery.each(data, function(key, data){
 					$('#' + key).val(data);
 				});
 			});
-			$('.charAttribute span input').on('focusin', function(event){
+			$('.charAttribute span input, .charAttribute span select').on('focusin', function(event){
 				$(this).data('initialData', $(this).val());
 			});
-			$('.charAttribute span input').on('focusout', function(event){
-				if($(this).data('initialData') != $(this).val()){
-
-					var elementName = $(this).attr('id');
-					var savingElementName = '#saving' + elementName;
-					$(savingElementName).addClass('active');
-					var data = {
-						'action': 'updateUserAttribute', 
-						'id': '<?php echo($userId); ?>'
-					}
-					data[$(this).attr('id')] = $(this).val(); //I hate javascript sometimes...
-					jQuery.getJSON('../includes/data/users.php', data, function(data){
-						$(savingElementName).removeClass('active');
-					});
-					$(this).data('initialData', $(this).val());
-				}
+			$('.charAttribute span input, .charAttribute span select').on('focusout keyup', function(event){
+				if(event.keyCode == 13 || event.type == "focusout")
+					saveField(this);
 			});
+			$('.charAttribute span select ').on('click', function(event){
+				saveField(this);
+			});
+
 			$('.inventorySlot').on('click', function(event){
 				var position = $(this).offset();
 				console.log(position);
@@ -224,6 +234,23 @@
 					});
 				}, 1000));
 			});
+			function saveField(element){
+				if($(element).data('initialData') != $(element).val()){
+					var elementName = $(element).attr('id');
+					var savingElementName = '#saving' + elementName;
+					$(savingElementName).addClass('active');
+					var data = {
+						'action': 'updateUserAttribute', 
+						'id': '<?php echo($userId); ?>'
+					}
+					data[$(element).attr('id')] = $(element).val(); //I hate javascript sometimes...
+					jQuery.getJSON('../includes/data/users.php', data, function(data){
+						$(savingElementName).removeClass('active');
+					});
+					$(element).data('initialData', $(element).val());
+				}
+			}
+
 		});
 	</script>
 
