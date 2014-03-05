@@ -1,3 +1,9 @@
+.sectionHeader {
+    font-family: verdana;
+    font-size: 10px;
+    color: #BBB;
+    font-weight: bold;}
+
 .charAttrLabel {
 	min-width: 120px;
 	display: inline-block;
@@ -22,14 +28,6 @@
 	padding-bottom: 2px;
 }
 
-.inventorySlot {
-	border: 1px solid black;
-	min-width: 50px; 
-	min-height: 50px;
-	display: inline-block;
-	/*padding: 1px;*/
-}
-
 .active {
 	background: url('../images/processing.gif') no-repeat right top;
 }
@@ -41,4 +39,46 @@
 	height: 15px;
 	display: inline-block;
 	background-size:15px 15px;
+}
+
+.inventorySlot {
+	border: 1px solid black;
+	min-width: 50px; 
+	min-height: 50px;
+	display: inline-block;
+	z-index: 100;
+	margin-left: 2px;
+}
+
+#searchBox{ 
+	position: absolute;
+	display: inline-block;
+}
+
+#searchBox input {
+	border: 1px inset #ccc;
+}
+
+.searchResult {
+	background-color: white;
+	border: 1px solid black;
+	padding: 3px;
+}
+
+.searchResultHoverIn {
+	color: white;
+	background-color: #99CCFF;
+}
+
+.searchResultHoverOut {
+
+}
+
+.itemName {
+	vertical-align: middle;
+}
+
+.itemIcon {
+	height: 30px; 
+	width: 30px;
 }

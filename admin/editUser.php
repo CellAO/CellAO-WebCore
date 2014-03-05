@@ -9,7 +9,21 @@
 		exit;
 	}
 ?>
-	<div id="editUser" class="indentedContent">
+	
+	<div id="userInventory" style="margin-top: 50px;" class="section">
+		<span class='sectionHeader'>Inventory:</span>
+		<?php
+		for($i = 0; $i <= 5; $i++){
+			$output = '<div class="inventoryRow">';
+			for($x = 0; $x <= 3; $x++){
+				$output .= '<span class="inventorySlot" id="">Item</span>';
+			}
+			$output .= '</div>';
+			echo($output);
+		} ?>
+	</div>
+<div id="editUser" class="indentedContent section">
+	<span class="sectionHeader">User Attributes:</span> 
 		<div class="charAttribute">
 			<span class="charAttrLabel">
 				<label for="Id">Id: </label>
@@ -117,51 +131,17 @@
 			<span id='savingFlags' class="savingIcon"></span>
 		</div>
 	</div>
-	<div id="userInventory" style="margin-top: 50px; "class="">
-		<div class='inventoryRow'>
-			<span class="inventorySlot" id="">Item</span>
-			<span class="inventorySlot" id="">Item</span>
-			<span class="inventorySlot" id="">Item</span>
-			<span class="inventorySlot" id="">Item</span>
-		</div>
-		<div class='inventoryRow'>
-			<span class="inventorySlot" id="">Item</span>
-			<span class="inventorySlot" id="">Item</span>
-			<span class="inventorySlot" id="">Item</span>
-			<span class="inventorySlot" id="">Item</span>
-		</div>
-		<div class='inventoryRow'>
-			<span class="inventorySlot" id="">Item</span>
-			<span class="inventorySlot" id="">Item</span>
-			<span class="inventorySlot" id="">Item</span>
-			<span class="inventorySlot" id="">Item</span>
-		</div>
-		<div class='inventoryRow'>
-			<span class="inventorySlot" id="">Item</span>
-			<span class="inventorySlot" id="">Item</span>
-			<span class="inventorySlot" id="">Item</span>
-			<span class="inventorySlot" id="">Item</span>
-		</div>
-		<div class='inventoryRow'>
-			<span class="inventorySlot" id="">Item</span>
-			<span class="inventorySlot" id="">Item</span>
-			<span class="inventorySlot" id="">Item</span>
-			<span class="inventorySlot" id="">Item</span>
-		</div>
-		<div class='inventoryRow'>
-			<span class="inventorySlot" id="">Item</span>
-			<span class="inventorySlot" id="">Item</span>
-			<span class="inventorySlot" id="">Item</span>
-			<span class="inventorySlot" id="">Item</span>
+	<div id="searchBox" style="z-index: 50; display: none; ">
+		<input type="text">
+		<span id="searchCancelButton" style="position: relative; right: 20px; padding: 0px; opacity: 0.4;"><img src="../images/close_button.png"></span>
+		<div id="searchResults">
 		</div>
 	</div>
-
 	<script>
 		$(document).ready(function(){
 			jQuery.getJSON('../includes/data/users.php', {'action': 'getUserById', 'id': <?php echo($userId); ?>}, function(data){
 				jQuery.each(data, function(key, data){
 					$('#' + key).val(data);
-					// console.log(key);
 				});
 			});
 			$('.charAttribute span input').on('focusin', function(event){
@@ -183,6 +163,66 @@
 					});
 					$(this).data('initialData', $(this).val());
 				}
+			});
+			$('.inventorySlot').on('click', function(event){
+				var position = $(this).offset();
+				console.log(position);
+				position.left += 10; 
+				position.top += 10;
+				$('#searchBox').show('slow').offset(position);
+			});
+			$('#searchCancelButton').click(function(event){
+				$('#searchBox').hide('slow');
+			});
+			$(window).resize(function(){
+				$('#searchBox').hide();
+			});
+			$('#searchBox input').on('keyup', function(event){
+				switch(event.keyCode){
+					case 13: 
+						break;
+					case 27: 
+						console.log('hit');
+						$('#searchBox').hide('slow');
+					break;
+				}
+			}).bind("input propertychange", function (evt) {
+				// If it's the propertychange event, make sure it's the value that changed.
+				if (window.event && event.type == "propertychange" && event.propertyName != "value")
+				return;
+
+				// Clear any previously set timer before setting a fresh one
+				window.clearTimeout($(this).data("timeout"));
+				$(this).data("timeout", setTimeout(function () {
+					$('#searchResults').html('<div class="searchResult"><img src="../images/processing.gif"> Searching...</div>');
+					jQuery.getJSON('../includes/data/items.php', {'action': 'searchItems', 'query': $('#searchBox input').val(), 'limit': 5}, function(data){
+						$('#searchResults').html('');
+						if(data.length){
+							jQuery.each(data, function(key, value){
+								$('#searchResults').append('<div class="searchResult" id="item' + value.id + '" style="">');
+								if(value.Icon == "0"){
+									value.iconPath = '../images/no.png';
+								} else {
+									value.iconPath = '../images/icons/' + value.Icon + '.png'
+								}
+								$('#item' + value.id).append('<span><img class="itemIcon" src="' + value.iconPath + '">');
+								$('#item' + value.id).append('<span><span class="itemName">' + value.Name + "</span></div>");
+								$('.searchResult').click(function(event){
+									console.log($(this).attr('id').substr(5));
+								});;
+							})
+						} else {
+							$('#searchResults').append('<div class="searchResult">No items found.</div>');
+						}
+						$('.searchResult').hover(function(event){
+							if(event.type == "mouseenter"){
+								$(this).addClass('searchResultHoverIn');
+							} else {
+								$(this).removeClass('searchResultHoverIn');
+							}
+						});
+					});
+				}, 1000));
 			});
 		});
 	</script>
