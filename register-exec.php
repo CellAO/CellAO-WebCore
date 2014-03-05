@@ -100,14 +100,6 @@
 
 			@mysql_free_result($result);
 		}
-		$qry = "SELECT * FROM login WHERE FirstName='$fname'";
-		$result = mysql_query($qry);
-		$member = mysql_fetch_assoc($result);
-		if ($member['FirstName']==$fname && $member['LastName']==$lname) {
-			$errmsg_arr[] = 'The User <b>'.$fname.' '.$lname.'</b> already exists.<br>Please choose another name.';
-
-			@mysql_free_result($result);
-		}
 	}
 
 	if(sizeof($errmsg_arr) > 0) {
