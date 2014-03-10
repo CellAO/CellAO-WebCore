@@ -11,26 +11,29 @@
 		case "searchItems":
 			isset($_REQUEST['query']) ? $queryString = $_REQUEST['query'] : printNoResults();
 			isset($_REQUEST['limit']) ? $limit = $_REQUEST['limit'] : $limit = 5;
-			echo(json_encode(searchItems($queryString, $limit)));
+			isset($_REQUEST['showNoIconItems']) ? $showNoIconItems = $_REQUEST['showNoIconItems'] : $showNoIconItems = false;
+			$showNoIconItems == "true" ? $showNoIconItems = true : $showNoIconItems = false;
+			echo(json_encode(searchItems($queryString, $limit, $showNoIconItems)));
 			break;
 		case "spawnItemForUser":
 			//This is not secure at the moment. Might need to consider moving it and other item administrative functions to their own file. 
+			isset($_REQUEST['userId']) ? $userId = $_REQUEST['userId'] : $printNoResults();
 			isset($_REQUEST['itemId']) ? $itemId = $_REQUEST['itemId'] : printNoResults();
 			isset($_REQUEST['ql']) ? $ql = $_REQUEST['ql'] : $printNoResults();
-			isset($_REQUEST['userId']) ? $userId = $_REQUEST['userId'] : $printNoResults();
-			echo(json_encode(spawnItemforUser($itemId, $ql, $userId)));
+			echo(json_encode(spawnItemforUser($userId, $itemId, $ql)));
 			break;
 			
 	}
 	die();
 
-	function searchItems($query, $limit){
+	function searchItems($query, $limit, $showNoIconItems){
 		global $pdo;
 		$sql = "SELECT `itemnames`.`id`, `itemnames`.`Name`, `itemnames`.`ItemType`, `itemnames`.`Icon`
 				FROM `itemnames` 
 				WHERE `itemnames`.`Name` 
-				LIKE :query 
-				LIMIT %d";
+				LIKE :query ";
+		$showNoIconItems ? NULL : $sql .= "AND `itemnames`.`icon` != 0 ";
+		$sql .= "LIMIT %d";
 		$sql = sprintf($sql, $limit);
 		$sth = $pdo->prepare($sql);
 		$sth->execute(array(':query' => '%' . $query . '%'));
@@ -38,8 +41,18 @@
 		return $results;
 	}
 
-	function spawnItemForUser($itemId, $ql, $userId){
-
+	function spawnItemForUser($userId, $itemId, $ql){
+		global $pdo;
+		$return = new stdClass; 
+		$sql = "INSERT INTO `itemspawn` (`itemspawn`.`UserId`, `itemspawn`.`ItemId`, `itemspawn`.`Quality`) VALUES (:userId, :itemId, :ql)";
+		$sth = $pdo->prepare($sql);
+		if($sth->execute(array(':userId' => $userId, ':itemId' => $itemId, ':ql' => $ql))){
+			$return->success = true;
+		} else { 
+			$return->success = false;
+		}
+		
+		return $return;
 	}
 
 	// function getUserItems($uid){

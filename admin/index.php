@@ -15,7 +15,7 @@
 				<a href="editUser.php">Edit a user</a>
 			</li>
 			<li>
-				<a href="#">Placeholder</a>
+				<a href="#">Search for a character</a>
 			</li>
 			<li>
 				<a href="#">Placeholder</a>

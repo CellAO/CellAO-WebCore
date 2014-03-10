@@ -1,3 +1,7 @@
+#characterList {
+	width: 90px;
+}
+
 .sectionHeader {
     font-family: verdana;
     font-size: 10px;
@@ -35,8 +39,8 @@
 .savingIcon {
 	min-width: 15px;
 	min-height: 15px;
-	width: 15px;
-	height: 15px;
+	width: inherit;
+	height: inherit;
 	display: inline-block;
 	background-size:15px 15px;
 }
@@ -48,14 +52,15 @@
 	display: inline-block;
 	z-index: 100;
 	margin-left: 2px;
+	background-color: #00B8E6;
 }
 
-#searchBox{ 
+#itemSearchBox{ 
 	position: absolute;
 	display: inline-block;
 }
 
-#searchBox input {
+#itemSearchBox input {
 	border: 1px inset #ccc;
 }
 

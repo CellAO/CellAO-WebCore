@@ -20,8 +20,8 @@
 			echo(json_encode(getAllUsersTableJSON()));
 			break;
 		case "updateUserAttribute":
-			isset($_REQUEST['id']) ? $id = $_REQUEST['id'] : printNoResults();
-			echo(json_encode(udpateUserAttribute($id)));
+			isset($_REQUEST['query']) ? $query = $_REQUEST['query'] : printNoResults();
+			echo(json_encode(udpateUserAttribute($query)));
 			break;
 	}
 	die();
@@ -66,24 +66,27 @@
 		return $results;
 	}
 
-	function udpateUserAttribute($uid){
+	function udpateUserAttribute($query){
 		global $pdo; 
 		$possibleKeys = array('Email', 'FirstName', 'LastName', 'Username', 'Password', 'AllowedCharacters', 'Flags', 'AccountFlags', 'Expansions', 'GM');
 		$arguments = array();
-		$query = "UPDATE `login` SET ";
+		$sql = "UPDATE `login` SET ";
 		foreach($_REQUEST as $key => $value){
 			if(in_array($key, $possibleKeys)){
-				$query .= ' `login`.`' . $key . '` = :' . $key;
+				$sql .= ' `login`.`' . $key . '` = :' . $key;
 				$arguments[":".$key] = $value;
-
 			}
 		}
 		$return = new stdClass; 
 		if(sizeof($arguments) > 0){
-			$sth = $pdo->prepare($query);
-			// echo($query);
-			// var_dump($arguments); 
-			// exit;
+			if(is_numeric($query)){
+				$sql .= ' WHERE `login`.`Id` = :query';
+			} else {
+				$sql .= ' WHERE `login`.`Username` = :query';
+			}
+			$arguments[':query'] = $query;
+
+			$sth = $pdo->prepare($sql);
 			if($sth->execute($arguments)){
 				$return->success = true; 
 			} else {

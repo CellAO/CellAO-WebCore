@@ -40,55 +40,74 @@
 						<span id="headDate">[<?php print(date("Y-m-d")); ?>]</span>
 						<span id="mottoText">.:Cell AO - Serving the AO Community:.</span>
 				</div>
-								<?php
-										if(isset($_SESSION['SESS_ID'])){
-										?>
-												<span id="welcomeMessage">Welcome <?php print($_SESSION['SESS_FIRST_NAME']); ?> <a href="<?php echo($preLink);?>logout.php">(Logout)</a></span>
-										<?php 
-										} else {
-										?>
-												<!-- This is the login controls holder -->
-														<div class="userform">
-																<form id="loginForm" name="loginForm" method="post" action="<?php echo($preLink);?>process-login.php">
-																	<!-- Here's your login controls -->
-																	<input type="text" name="login" id="login" value="Username" size="15"/>
-																	<input type="text" name="password" id="password" value="Password" size="15" />
-																	<input type="submit" name="Submit" value="Login" />
-																</form>
-																<input type="submit" id="register" name="Register" value="Register">
+				<div>
+					<span style="float: left;">
+						<?php
+						if(isset($_SESSION['SESS_ID'])){
+						?>
+								<span id="welcomeMessage">Welcome <?php print($_SESSION['SESS_FIRST_NAME']); ?> <a href="<?php echo($preLink);?>logout.php">(Logout)</a></span>
+						<?php 
+						} else {
+						?>
+							<!-- This is the login controls holder -->
+							<div class="userform">
+									<form id="loginForm" name="loginForm" method="post" action="<?php echo($preLink);?>process-login.php">
+										<!-- Here's your login controls -->
+										<input type="text" name="login" id="login" value="Username" size="15"/>
+										<input type="text" name="password" id="password" value="Password" size="15" />
+										<input type="submit" name="Submit" value="Login" />
+									</form>
+									<input type="submit" id="register" name="Register" value="Register">
 
-														</div>
-														<script>
-															$('#login').on('focusin', function(event){ 
-																if($(this).val() == "Username"){
-																	$(this).val('');
-																}
-															});
-															$('#login').on('focusout', function(event){
-																if($(this).val() == ""){
-																	$(this).val('Username');
-																}
-															});
-															$('#password').on('focusin', function(event){
-																$(this).val('');
-																$(this).attr('type', 'password');
-															});
-															$('#password').on('focusout', function(event){
-																if($(this).val() == ""){
-																 $(this).attr('type', 'text');
-																 $(this).val('Password');
+							</div>
+							<!-- @TODO: Pull out into a script file. -->
+							<script>
+								$('#login').on('focusin', function(event){ 
+									if($(this).val() == "Username"){
+										$(this).val('');
+									}
+								});
+								$('#login').on('focusout', function(event){
+									if($(this).val() == ""){
+										$(this).val('Username');
+									}
+								});
+								$('#password').on('focusin', function(event){
+									$(this).val('');
+									$(this).attr('type', 'password');
+								});
+								$('#password').on('focusout', function(event){
+									if($(this).val() == ""){
+									 $(this).attr('type', 'text');
+									 $(this).val('Password');
 
-																}
-															});
-															$('#register').on('click', function(event){
-																event.stopPropagation();
-																window.location = '<?php echo($preLink);?>register.php';
-															});
-														</script>
-												<!-- End of the login controls holder -->
-										<?php
-										}
-								?>
+									}
+								});
+								$('#register').on('click', function(event){
+									event.stopPropagation();
+									window.location = '<?php echo($preLink);?>register.php';
+								});
+							</script>
+							<!-- End of the login controls holder -->
+						<?php
+						}
+						?>
+					</span>
+					<span style="float: right;"><input type="text" value="Search..." id="searchBox"></span>
+					<!-- @TODO: Pull out into a script file. -->
+					<script type="text/javascript">
+						$('#searchBox').on('focusin', function(event){
+							if($(this).val() == "Search..."){
+								$(this).val('');
+							}
+						});
+						$('#searchBox').on('focusout', function(event){
+							if($(this).val() == ""){
+								$(this).val('Search...');
+							}
+						});
+					</script>
+				</div>
 				<!-- End of top bar -->
 
 
@@ -109,7 +128,7 @@
 											}
 										?>
 										<?php
-											if(isset($_SESSION['SESS_GM']) && $_SESSION['SESS_GM'] == 100){
+											if(isset($_SESSION['SESS_GM']) && $_SESSION['SESS_GM'] >= 100){
 										?>
 											<li id="navigationItem">
 													<a href="<?php echo($preLink);?>admin.php"><span>.: ADMIN :.</span></a>
@@ -120,9 +139,9 @@
 										<li id="navigationItem">
 												<a href="http://www.aocell.info/forums/"><span>.: FORUM :.</span></a>
 										</li>
-										<!-- <li id="navigationItem">
+										<li id="navigationItem">
 												<a href="<?php echo($preLink);?>#"><span>.: CHAT :.</span></a>
-										</li> -->
+										</li>
 										<li id="navigationItem">
 												<a href="<?php echo($preLink);?>support.php"><span>.: SUPPORT :.</span></a>
 										</li>

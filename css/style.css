@@ -151,6 +151,15 @@ body {
     font-weight: bold;
 }
 
+#searchBox {
+    border: 0px solid #DDD;
+    font-family: verdana;
+    font-size: 10px;
+    color: #BBB;
+    font-weight: bold;
+    margin-right: 20px;  
+}
+
 option.imagebacked {
     padding: 2px 0 2px 20px;
     background-repeat: no-repeat;
