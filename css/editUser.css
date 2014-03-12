@@ -53,6 +53,7 @@
 	z-index: 100;
 	margin-left: 2px;
 	background-color: #00B8E6;
+	background-repeat: none;
 }
 
 #itemSearchBox{ 

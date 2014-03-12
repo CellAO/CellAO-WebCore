@@ -22,9 +22,37 @@
 			isset($_REQUEST['ql']) ? $ql = $_REQUEST['ql'] : $printNoResults();
 			echo(json_encode(spawnItemforUser($userId, $itemId, $ql)));
 			break;
+		case "getUsersInventory":
+			isset($_REQUEST['query']) ? $queryString = $_REQUEST['query'] : printNoResults();
+			echo(json_encode(getUsersInventory($queryString)));
+			break;
 			
 	}
-	die();
+	die(); 
+	// `items`.`ContainerType`, `items`.`ContainerInstance`, `items`.`ContainerPlacement`, `items`.`LowId`, `items`.`HighId`, `items`.`Quality`, `items`.`MultipleCount` 
+
+	function getUsersInventory($query){
+		global $pdo;
+		$sql = "SELECT `items`.`Id`, `items`.`ContainerType`, `items`.`ContainerInstance`, 
+							`items`.`ContainerPlacement`, `items`.`LowId`, 
+							`items`.`HighId`, `items`.`Quality`, `items`.`MultipleCount`,
+							`itemnames`.`Name`, `itemnames`.`ItemType`, `itemnames`.`Icon`
+				FROM `items`, `characters`, `itemnames`
+				WHERE `items`.`ContainerType` = `characters`.`Id`
+				AND `itemnames`.`Id` = `items`.`HighId`
+				AND `items`.`ContainerInstance` = 104";
+				
+		if(is_numeric($query)){
+			$sql .= " AND `characters`.`Id` = :query";	
+		} else {
+			$sql .= " AND `characters`.`Name` = :query";
+		}
+		
+		$sth = $pdo->prepare($sql);
+		$sth->execute(array(':query' =>  $query));
+		$results = $sth->fetchAll(PDO::FETCH_ASSOC);
+		return $results;
+	}
 
 	function searchItems($query, $limit, $showNoIconItems){
 		global $pdo;
