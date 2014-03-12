@@ -14,7 +14,7 @@
 	<div id="userInventory" style="margin-top: 50px;" class="section">
 		<span class='sectionHeader'>Inventory:</span>
 		<?php
-		for($y = 0; $y <= 5; $y++){
+		for($y = 0; $y <= 6; $y++){
 			$output = '<div class="inventoryRow">';
 			for($x = 0; $x <= 3; $x++){
 				$output .= '<span class="inventorySlot" id="inventory' . $y . $x . '"></span>';

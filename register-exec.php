@@ -111,7 +111,7 @@
 	$allowed_characters = "6";
 	$flags = "0";
 	$accountflags = "0";
-	$expansions = "255";
+	$expansions = "2047";
 	$gm = "0";
 	
 	//Create INSERT query
@@ -121,7 +121,7 @@
 	}else {
 		//FIXME: Query does not work right now. 
 		//TODO: Switch to MySQL PDO
-		$qry = "INSERT INTO login(CreationDate, Email, Username, Password, Allowed_Characters, Flags, Accountflags, Expansions, GM, FirstName, LastName) VALUES('$creationdate', '$email', '$login', '$acntpwd', '$allowed_characters', '$flags', '$accountflags', '$expansions', '$gm', '$fname', '$lname')";
+		$qry = "INSERT INTO login(CreationDate, Email, Username, Password, AllowedCharacters, Flags, Accountflags, Expansions, GM, FirstName, LastName) VALUES('$creationdate', '$email', '$login', '$acntpwd', '$allowed_characters', '$flags', '$accountflags', '$expansions', '$gm', '$fname', '$lname')";
 		$result = @mysql_query($qry);
 			if($result) {
 			header("location: index.php?msg=Account successfully created. Please log in to continue.");
