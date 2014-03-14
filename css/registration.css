@@ -1,0 +1,7 @@
+.highlited {
+	border: 1px solid red;
+}
+
+.not-highlighted {
+	border: 1px solid black;
+}
