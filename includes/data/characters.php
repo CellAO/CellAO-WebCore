@@ -46,10 +46,12 @@
 		$sql = "SELECT `characters`.`Id`, `characters`.`Username`, `characters`.`Name`, `characters`.`FirstName`, 
 						`characters`.`LastName`, `characters`.`Textures0`, `characters`.`Textures1`, 
 						`characters`.`Textures2`, `characters`.`Textures3`, `characters`.`Textures4`, 
-						`characters`.`playfield`, `characters`.`X`, `characters`.`Y`, `characters`.`Z`, 
+						`characters`.`playfield`, `playfields`.`Name` as 'playfieldName', `characters`.`X`, `characters`.`Y`, `characters`.`Z`, 
 						`characters`.`HeadingX`, `characters`.`HeadingY`, `characters`.`HeadingZ`, 
 						`characters`.`HeadingW`
-				FROM `characters` WHERE ";
+				FROM `characters`, `playfields`
+				WHERE `playfields`.`Id` = `characters`.`playfield`
+				AND ";
 		if(is_numeric($query)){
 			$sql .= "`characters`.`Id`";
 		} else {

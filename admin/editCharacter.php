@@ -26,7 +26,7 @@
 
 	</div>
 	<div id="editUser" class="indentedContent section">
-	<span class="sectionHeader">User Attributes:</span> 
+	<span class="sectionHeader">Character Attributes:</span> 
 		<div class="charAttribute">
 			<span class="charAttrLabel">
 				<label for="Id">Id: </label>
@@ -182,10 +182,10 @@
 		</div>
 		<div class="charAttribute">
 			<span class="charAttrLabel">
-				<label for="playfield">Playfield: </label>
+				<label for="playfieldName">Playfield: </label>
 			</span>
 			<span>
-				<input type="text" value="" class="charAttribute" id="playfield" />
+				<input type="text" value="" class="charAttribute" id="playfieldName" />
 			</span>
 			<span id='savingplayfield' class="savingIcon loadingCharAttribute"></span>
 		</div>
@@ -215,7 +215,11 @@
 			$('.charAttribute').val('');
 			jQuery.getJSON('../includes/data/characters.php', {'action': 'getCharacterInfo', 'query': <?php echo $userId ?>}, function(data){
 				jQuery.each(data, function(index, value){
-					$('input#'+index).val(value);
+					if(index == "playfieldName"){
+						$('input#'+index).val(data.playfield + " - " + value);
+					} else {
+						$('input#'+index).val(value);
+					}
 				});
 				$('.loadingCharAttribute').removeClass('active');
 			});

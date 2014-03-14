@@ -1,53 +1,59 @@
 <?php
 	
-    isset($_REQUEST['action']) ? $action = $_REQUEST['action'] : printNoResults();
+	isset($_REQUEST['action']) ? $action = $_REQUEST['action'] : printNoResults();
 
-    switch($action){
-        case "getPlayfield":
-        	isset($_REQUEST['id']) ? $playfieldId = $_REQUEST['id'] : printNoResults();
-            echo(json_encode(getPlayfield($playfieldId)));
+	switch($action){
+		case "getPlayfield":
+			isset($_REQUEST['query']) ? $query = $_REQUEST['query'] : printNoResults();
+			echo(json_encode(getPlayfield($query)));
+			break;
+		case "getPlayfieldName":
+			isset($_REQUEST['id']) ? $playfieldId = $_REQUEST['id'] : printNoResults();
+			echo(json_encode(getPlayfield($playfieldId)));
 			break;
 		case "getAllPlayfields":
-            echo(json_encode(getAllPlayfields()));
+			echo(json_encode(getAllPlayfields()));
 			break;       
-    }
-    die();
-
-	function getPlayfield($playfieldId){
-		$playfield = array();
-        $xdoc = new DOMDocument();
-        $xdoc->load('Playfields.xml');
-        $xpath = new DOMXPath($xdoc); 
-        if(!$xdoc) {
-            die("error");
-        }
-        $nodeList = $xpath->query('/Playfields/Playfield[@id="' . $playfieldId . '"]', $xdoc);
-        foreach ($nodeList as $node) {
-            $playfield = array('id' => $node->getAttribute('id'), 'expansion' => $node->getAttribute('expansion'), 'disabled' => $node->getAttribute('disabled'), 'name' => $node->childNodes->item(1)->nodeValue);
-        }
-        return $playfield;
 	}
+	die();
 
-	function getPlayfieldName($playfield){
-		if(!is_array($playfield)){
-			$playfield = getPlayfield($playfield);
+	function getPlayfield($query){
+		global $pdo;
+
+		$sql = "SELECT `playfields`.`Id`, `playfields`.`Expansion`, `playfields`.`Disabled`, `playfields`.`Name`
+							FROM `playfields` WHERE `playfields`.");
+		
+		if(is_numeric($query)){
+			$sth = $pdo->prepare($sql . "`Id` = :query");
+		} else {
+			$sth = $pdo->prepare($sql . "`Name` = :query");
 		}
-		return $playfield['name'];
+
+		$sth->execute(array(':query' => $query));
+		$results = $sth->fetch(PDO::FETCH_ASSOC);
+		return $results;
+	}
+	
+
+	function getPlayfieldName($playfieldId){
+		global $pdo;
+
+		$sth = $pdo->prepare("SELECT `playfields`.`Id`, `playfields`.`Expansion`, `playfields`.`Disabled`, `playfields`.`Name`
+							FROM `playfields` WHERE `playfields`.`Id` = :query");
+
+		$sth->execute(array(':query' => $playfieldId));
+		$results = $sth->fetch(PDO::FETCH_ASSOC);
+		return $results;
 	}
 
 	function getAllPlayfields(){
-		$playfieldList = array();
-        $xdoc = new DOMDocument();
-        $xdoc->load('Playfields.xml');
-        $xpath = new DOMXPath($xdoc); 
-        if(!$xdoc) {
-            die("error");
-        }
-        $nodeList = $xpath->query('/Playfields/Playfield', $xdoc);
-        foreach ($nodeList as $node) {
-            $playfieldList[] = array('id' => $node->getAttribute('id'), 'expansion' => $node->getAttribute('expansion'), 'disabled' => $node->getAttribute('disabled'), 'name' => $node->childNodes->item(1)->nodeValue);
-        }
-        return $playfieldList;
+		global $pdo;
+
+		$sth = $pdo->prepare("SELECT `playfields`.`Id`, `playfields`.`Expansion`, `playfields`.`Disabled`, `playfields`.`Name`
+							FROM `playfields`");
+		$sth->execute();
+		$results = $sth->fetchAll(PDO::FETCH_ASSOC);
+		return $results;
 	}
 
 	function printNoResults(){

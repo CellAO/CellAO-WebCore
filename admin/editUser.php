@@ -63,7 +63,8 @@
 				<label for="GM">GM: </label>
 			</span>
 			<span>
-				<select id="GM">					
+				<select id="GM">
+					<!-- @TODO: Revisit this.  -->
 					<option value="-1"></option>
 					<option value="0">User</option>
 					<option value="1">GM</option>
@@ -78,6 +79,7 @@
 			</span>
 			<span>
 				<input type="text" value="" id="Expansions" />
+				<!-- @TODO: Implement this. -->
 <!-- 			<select multiple>
 				<option value="0">Notum Wars</option>
 				<option value="1">Shadow Lands</option>
