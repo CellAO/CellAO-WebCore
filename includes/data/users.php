@@ -7,11 +7,11 @@
 	switch($action){
 		case "getUserById":
 			isset($_REQUEST['id']) ? $userId = $_REQUEST['id'] : printNoResults();
-			echo(json_encode(getUserById($userId)));
+			echo(json_encode(getUser($userId)));
 			break;
 		case "getUserByUsername":
 			isset($_REQUEST['username']) ? $username = $_REQUEST['username'] : printNoResults();
-			echo(json_encode(getUserByUsername($username)));
+			echo(json_encode(getUser($username)));
 			break;
 		case "getAllUsers":
 			echo(json_encode(getAllUsers()));
@@ -23,29 +23,28 @@
 			isset($_REQUEST['query']) ? $query = $_REQUEST['query'] : printNoResults();
 			echo(json_encode(udpateUserAttribute($query)));
 			break;
+		case "registerUser":
+
+			break;
+
 	}
 	die();
 
-	function getUserById($userId){
+	function getUser($query){
 		global $pdo;
-		$sth = $pdo->prepare("SELECT `login`.`Id`, `login`.`CreationDate`, `login`.`Email`, `login`.`FirstName`,
+		$sql = "SELECT `login`.`Id`, `login`.`CreationDate`, `login`.`Email`, `login`.`FirstName`,
 							`login`.`LastName`, `login`.`Username`, `login`.`Password`, `login`.`AllowedCharacters`, 
 							`login`.`Flags`, `login`.`AccountFlags`, `login`.`Expansions`, `login`.`GM`
-							FROM `login` WHERE `login`.`Id` = :userId");
-		$sth->execute(array(':userId' => $userId));
-		$results = $sth->fetch(PDO::FETCH_ASSOC);
-		return $results;
-	}
+							FROM `login` WHERE `login`.";
 
-	function getUserByUsername($username){
-		global $pdo;
-		$sth = $pdo->prepare("SELECT `login`.`Id`, `login`.`CreationDate`, `login`.`Email`, `login`.`FirstName`,
-							`login`.`LastName`, `login`.`Username`, `login`.`Password`, `login`.`AllowedCharacters`, 
-							`login`.`Flags`, `login`.`AccountFlags`, `login`.`Expansions`, `login`.`GM`
-							FROM `login` WHERE `login`.`Username` = :username");
-		$sth->execute(array(':username' => $username));
+		if(is_numeric($query)){
+			$sth = $pdo->prepare("`Id` = :query");
+		} else {
+			$sth = $pdo->prepare("`Username` = :query");
+		}
+		$sth->execute(array(':query' => $query));
 		$results = $sth->fetch(PDO::FETCH_ASSOC);
-		return $results;
+		return $results;	
 	}
 
 	function getAllUsers(){
