@@ -1,7 +1,7 @@
 <?php 
 	//Include database connection details
 	require_once('includes/config.php');
-
+	require_once('engine.php');
 	//Array to store validation errors
 	$errmsgs = array();
 	//Highlighted fields
@@ -41,7 +41,7 @@
 			//Make sure all fields, except passwords, don't have funky characters
 			if($index != ":password" && $index != ":cPassword" && $index != ":creationDate"){
 				if($index == ":email"){
-					if(filter_var($value, FILTER_VALIDATE_EMAIL)){
+					if(!filter_var($value, FILTER_VALIDATE_EMAIL)){
 						$errmsgs["Invalid email detected."] = true;
 						$errorFields[':email'] = true;
 					}
@@ -87,7 +87,7 @@
 			$errorFields['login'] = true;
 		}
 
-		if (!$regArgs[':password'] = createhash($regArgs[':password'])){
+		if (!$regArgs[':password'] = create_hash($regArgs[':password'])){
 			$errmsgs['Error creating account password.'] = true;
 		}
 
@@ -128,11 +128,6 @@
 		}
 	}
 
-	function createhash($password, $salt = ""){
-		if ($salt == "")
-			$salt = sprintf('%02x%02x', mt_rand(0, 0xff), mt_rand(0, 0xff));
-			return strtolower($salt) . "$" . md5(pack("H*", $salt) . $password);
-	}	
 	$includeCSSFiles[] = 'css/registration.css';
 	require_once('includes/header.php');
 

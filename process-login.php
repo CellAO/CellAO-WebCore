@@ -55,10 +55,9 @@
 			//Login Successful
 			session_regenerate_id();
 			$member = mysql_fetch_assoc($result);
-			// var_dump($member); exit;
 			$passhash = $member['Password'];
-			if (!webpass($passhash,$password))
-			{
+
+			if(!validate_password($password, $passhash)){
 				loginFailed(array('Failed to log you in.'));
 			}
 			//CreationDate, Email, Username, Password, Allowed_Characters, Flags, Accountflags, Expansions, GM, FirstName, LastName
@@ -77,8 +76,9 @@
 			header("location: member-index.php");
 			exit();
 		}else {
+		
 		}
-	}else {
+	} else {
 		loginFailed(array('Unable to log you in at this time.', 'Please try again later.'));
 	}
 
